@@ -12,7 +12,10 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 const HomeTab = () => {
   return (
     <Tab.Navigator
-      screenOptions={{ tabBarStyle: { backgroundColor: 'black' } }}>
+      screenOptions={{
+        tabBarStyle: { backgroundColor: 'black' },
+        tabBarActiveTintColor: 'white',
+      }}>
       <Tab.Screen name={RouteNames.HOME} component={HomeScreen} />
       <Tab.Screen name={RouteNames.SHOPPING} component={ShoppingScreen} />
     </Tab.Navigator>
