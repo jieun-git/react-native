@@ -15,6 +15,7 @@ const HomeTab = () => {
       screenOptions={{
         tabBarStyle: { backgroundColor: 'black' },
         tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: 'white',
       }}>
       <Tab.Screen name={RouteNames.HOME} component={HomeScreen} />
       <Tab.Screen name={RouteNames.SHOPPING} component={ShoppingScreen} />
