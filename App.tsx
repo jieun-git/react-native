@@ -35,6 +35,7 @@ const HomeTab = () => {
                 tabBarStyle: { backgroundColor: 'black' },
                 tabBarActiveTintColor: 'white',
                 tabBarInactiveTintColor: 'white',
+                headerShown: false,
             }}
         >
             <Tab.Screen
