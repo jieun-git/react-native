@@ -32,8 +32,10 @@ const HomeScreen = ({ navigation }: Props) => {
                         request.url != null &&
                         request.url.startsWith('https://')
                     ) {
-                        // url 이 m.naver.com 으로 시작하지 않으면 브라우저 스크린으로 라우팅시키겠다.
-                        navigation.navigate(RouteNames.BROWSER)
+                        // url 이 m.naver.com 으로 시작하지 않으면 브라우저 스크린으로 라우팅시키면서 요청받은 url로 보내겠다.
+                        navigation.navigate(RouteNames.BROWSER, {
+                            initialUrl: request.url,
+                        })
                         return false
                     }
                     return true
