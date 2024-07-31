@@ -11,7 +11,9 @@ const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 const HomeIcon = ({ focused, color }: { focused: boolean; color: string }) => {
-    return <MaterialCommunityIcons name="home" color={color} size={26} />
+    const iconName = focused ? 'home' : 'home-outline'
+
+    return <MaterialCommunityIcons name={iconName} color={color} size={26} />
 }
 
 const HomeTab = () => {
