@@ -16,7 +16,7 @@ const HomeScreen = ({ navigation }: Props) => {
             <WebView
                 source={{ uri: 'https://m.naver.com/' }}
                 showsVerticalScrollIndicator={false}
-                showHorizontalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 onShouldStartLoadWithRequest={(request) => {
                     if (
                         request.url.startsWith('https://m.naver.com') ||
