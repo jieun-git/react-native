@@ -63,6 +63,9 @@ const BrowserScreen = ({ route }: Props) => {
                 onLoadProgress={(event) => {
                     progressAnim.setValue(event.nativeEvent.progress)
                 }}
+                onLoadEnd={() => {
+                    progressAnim.setValue(0)
+                }}
             />
         </SafeAreaView>
     )
