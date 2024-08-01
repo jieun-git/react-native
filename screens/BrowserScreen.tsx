@@ -83,6 +83,9 @@ const BrowserScreen = ({ route, navigation }: Props) => {
     const { initialUrl } = route.params
 
     const [url, setUrl] = useState<string>(initialUrl)
+    const [canGoBack, setCanGoBack] = useState<boolean>(false)
+    const [canGoForward, setCanGoForward] = useState<boolean>(false)
+
     // url 이 바뀔 때만 연산하도록 하여 렌더링 최적화
     const urlTitle = useMemo(
         () => url.replace('https://', '').split('/')[0],
@@ -90,6 +93,8 @@ const BrowserScreen = ({ route, navigation }: Props) => {
     )
 
     const progressAnim = useRef(new Animated.Value(0)).current
+    // webView 에 ref 를 매겨 뒤/앞으로 갈 수 있는 상태인지 체크하기 위한 참값조 값
+    const webViewRef = useRef<WebView>(null)
 
     return (
         <SafeAreaView style={style.safearea}>
@@ -110,8 +115,11 @@ const BrowserScreen = ({ route, navigation }: Props) => {
                 />
             </View>
             <WebView
+                ref={webViewRef}
                 source={{ uri: initialUrl }}
                 onNavigationStateChange={(event) => {
+                    setCanGoBack(event.canGoBack)
+                    setCanGoForward(event.canGoForward)
                     setUrl(event.url)
                 }}
                 onLoadProgress={(event) => {
@@ -132,9 +140,20 @@ const BrowserScreen = ({ route, navigation }: Props) => {
                         <Text style={style.naverIconText}>N</Text>
                     </View>
                 </TouchableOpacity>
-                <NavButton iconName="arrow-left" />
-                <NavButton iconName="arrow-right" />
-                <NavButton iconName="refresh" />
+                <NavButton
+                    disabled={!canGoBack}
+                    iconName="arrow-left"
+                    onPress={() => webViewRef.current?.goBack()}
+                />
+                <NavButton
+                    disabled={!canGoForward}
+                    iconName="arrow-right"
+                    onPress={() => webViewRef.current?.goForward()}
+                />
+                <NavButton
+                    iconName="refresh"
+                    onPress={() => webViewRef.current?.reload()}
+                />
             </View>
         </SafeAreaView>
     )
