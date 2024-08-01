@@ -1,8 +1,8 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, Animated } from 'react-native'
 import WebView from 'react-native-webview'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../routes.ts'
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'browser'>
 
@@ -15,9 +15,17 @@ const style = StyleSheet.create({
         paddingVertical: 5,
     },
     urlText: { color: 'white' },
+    loadingBarBackground: {
+        height: 3,
+        backgroundColor: 'white',
+    },
+    loadingBar: {
+        height: '100%',
+        backgroundColor: 'green',
+    },
 })
 
-const ShoppingScreen = ({ route }: Props) => {
+const BrowserScreen = ({ route }: Props) => {
     const { initialUrl } = route.params
 
     const [url, setUrl] = useState<string>(initialUrl)
@@ -27,19 +35,37 @@ const ShoppingScreen = ({ route }: Props) => {
         [url],
     )
 
+    const progressAnim = useRef(new Animated.Value(0)).current
+
     return (
         <SafeAreaView style={style.safearea}>
             <View style={style.urlContainer}>
                 <Text style={style.urlText}>{urlTitle}</Text>
+            </View>
+            <View style={style.loadingBarBackground}>
+                <Animated.View
+                    style={[
+                        style.loadingBar,
+                        {
+                            width: progressAnim.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: ['0%', '100%'],
+                            }),
+                        },
+                    ]}
+                />
             </View>
             <WebView
                 source={{ uri: initialUrl }}
                 onNavigationStateChange={(event) => {
                     setUrl(event.url)
                 }}
+                onLoadProgress={(event) => {
+                    progressAnim.setValue(event.nativeEvent.progress)
+                }}
             />
         </SafeAreaView>
     )
 }
 
-export default ShoppingScreen
+export default BrowserScreen
