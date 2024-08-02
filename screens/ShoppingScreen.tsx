@@ -73,6 +73,8 @@ const ShoppingScreen = ({ navigation }: Props) => {
                     }}
                     // 웹뷰 로딩이 끝났을 때
                     onLoad={() => setRefreshing(false)}
+                    renderLoading={() => <></>}
+                    startInLoadingState={true}
                 />
             </ScrollView>
         </SafeAreaView>
