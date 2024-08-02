@@ -5,6 +5,7 @@ import {
     View,
     Animated,
     TouchableOpacity,
+    Share,
 } from 'react-native'
 import WebView from 'react-native-webview'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -153,6 +154,10 @@ const BrowserScreen = ({ route, navigation }: Props) => {
                 <NavButton
                     iconName="refresh"
                     onPress={() => webViewRef.current?.reload()}
+                />
+                <NavButton
+                    iconName="share-outline"
+                    onPress={() => Share.share({ message: url })}
                 />
             </View>
         </SafeAreaView>
