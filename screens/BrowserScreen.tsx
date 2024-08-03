@@ -10,8 +10,9 @@ import {
 import WebView from 'react-native-webview'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../routes.ts'
-import { useMemo, useRef, useState } from 'react'
+import { useContext, useMemo, useRef, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { WebViewContext } from '../components/WebViewProvider.tsx'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'browser'>
 
@@ -81,6 +82,8 @@ const NavButton = ({
 }
 
 const BrowserScreen = ({ route, navigation }: Props) => {
+    const context = useContext(WebViewContext)
+
     const { initialUrl } = route.params
 
     const [url, setUrl] = useState<string>(initialUrl)
@@ -95,7 +98,7 @@ const BrowserScreen = ({ route, navigation }: Props) => {
 
     const progressAnim = useRef(new Animated.Value(0)).current
     // webView 에 ref 를 매겨 뒤/앞으로 갈 수 있는 상태인지 체크하기 위한 참값조 값
-    const webViewRef = useRef<WebView>(null)
+    const webViewRef = useRef<WebView | null>(null)
 
     return (
         <SafeAreaView style={style.safearea}>
@@ -116,7 +119,12 @@ const BrowserScreen = ({ route, navigation }: Props) => {
                 />
             </View>
             <WebView
-                ref={webViewRef}
+                ref={(ref) => {
+                    webViewRef.current = ref
+                    if (ref != null) {
+                        context?.addWebView(ref)
+                    }
+                }}
                 source={{ uri: initialUrl }}
                 onNavigationStateChange={(event) => {
                     setCanGoBack(event.canGoBack)

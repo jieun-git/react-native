@@ -8,6 +8,7 @@ import BrowserScreen from './screens/BrowserScreen.tsx'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import LoginButton from './components/LoginButton.tsx'
 import LoginScreen from './screens/LoginScreen.tsx'
+import { WebViewProvider } from './components/WebViewProvider.tsx'
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -56,33 +57,36 @@ const HomeTab = () => {
 
 const App = () => {
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen
-                    name={RouteNames.HOME_TAB}
-                    component={HomeTab}
-                    options={{
-                        title: '',
-                        headerStyle: { backgroundColor: 'black' },
-                        headerRight: LoginButton,
-                    }}
-                />
-                <Stack.Screen
-                    name={RouteNames.BROWSER}
-                    component={BrowserScreen}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name={RouteNames.LOGIN}
-                    component={LoginScreen}
-                    options={{
-                        title: '',
-                        headerStyle: { backgroundColor: 'black' },
-                        headerTintColor: 'white',
-                    }}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
+        // WebViewProvider 의 children 들은 WebViewContext를 이용해 데이터를 import하고 사용할 수 있음(props x, 전역 상태 o)
+        <WebViewProvider>
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen
+                        name={RouteNames.HOME_TAB}
+                        component={HomeTab}
+                        options={{
+                            title: '',
+                            headerStyle: { backgroundColor: 'black' },
+                            headerRight: LoginButton,
+                        }}
+                    />
+                    <Stack.Screen
+                        name={RouteNames.BROWSER}
+                        component={BrowserScreen}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name={RouteNames.LOGIN}
+                        component={LoginScreen}
+                        options={{
+                            title: '',
+                            headerStyle: { backgroundColor: 'black' },
+                            headerTintColor: 'white',
+                        }}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </WebViewProvider>
     )
 }
 

@@ -7,7 +7,8 @@ import {
 import WebView from 'react-native-webview'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList, RouteNames } from '../routes.ts'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useContext, useRef, useState } from 'react'
+import { WebViewContext } from '../components/WebViewProvider.tsx'
 
 type Props = NativeStackScreenProps<RootStackParamList>
 
@@ -22,7 +23,9 @@ const SHOPPING_HOME_URL = 'https://shopping.naver.com/home'
 
 // request 가 홈 화면이랑 관련 된 것이면 true를 리턴, 그 외에는 다른 스크린으로 보여줌
 const ShoppingScreen = ({ navigation }: Props) => {
-    const webViewRef = useRef<WebView>(null)
+    const context = useContext(WebViewContext)
+
+    const webViewRef = useRef<WebView | null>(null)
 
     const [refreshing, setRefreshing] = useState<boolean>(false)
 
@@ -44,7 +47,12 @@ const ShoppingScreen = ({ navigation }: Props) => {
                 }
             >
                 <WebView
-                    ref={webViewRef}
+                    ref={(ref) => {
+                        webViewRef.current = ref
+                        if (ref != null) {
+                            context?.addWebView(ref)
+                        }
+                    }}
                     source={{ uri: SHOPPING_HOME_URL }}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
