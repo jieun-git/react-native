@@ -87,6 +87,9 @@ const DISABLE_PINCH_ZOOM = `(function() {
     meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no')
     meta.setAttribute('name', 'viewport')
     document.getElementsByTagName('head')[0].appendChild(meta)
+    
+    document.body.style['user-select'] = 'none'
+    document.body.style['-webkit-user-select'] = 'none'
 })()`
 
 const BrowserScreen = ({ route, navigation }: Props) => {
