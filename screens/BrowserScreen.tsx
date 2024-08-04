@@ -81,6 +81,13 @@ const NavButton = ({
     )
 }
 
+const DISABLE_PINCH_ZOOM = `(function() {
+    const meta = document.createElement('meta')
+    meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no')
+    meta.setAttribute('name', 'viewport')
+    document.getElementsByTagName('head')[0].appendChild(meta)
+})()`
+
 const BrowserScreen = ({ route, navigation }: Props) => {
     const context = useContext(WebViewContext)
 
@@ -137,6 +144,8 @@ const BrowserScreen = ({ route, navigation }: Props) => {
                 onLoadEnd={() => {
                     progressAnim.setValue(0)
                 }}
+                injectedJavaScript={DISABLE_PINCH_ZOOM}
+                onMessage={() => {}}
             />
             <View style={style.navigator}>
                 <TouchableOpacity
