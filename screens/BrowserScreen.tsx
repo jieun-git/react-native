@@ -146,6 +146,7 @@ const BrowserScreen = ({ route, navigation }: Props) => {
                 }}
                 injectedJavaScript={DISABLE_PINCH_ZOOM}
                 onMessage={() => {}}
+                allowsLinkPreview={false}
             />
             <View style={style.navigator}>
                 <TouchableOpacity
