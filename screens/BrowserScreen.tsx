@@ -13,6 +13,7 @@ import { RootStackParamList } from '../routes.ts'
 import { useContext, useMemo, useRef, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { WebViewContext } from '../components/WebViewProvider.tsx'
+import { useBackHandler } from '@react-native-community/hooks'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'browser'>
 
@@ -106,6 +107,14 @@ const BrowserScreen = ({ route, navigation }: Props) => {
     const progressAnim = useRef(new Animated.Value(0)).current
     // webView 에 ref 를 매겨 뒤/앞으로 갈 수 있는 상태인지 체크하기 위한 참값조 값
     const webViewRef = useRef<WebView | null>(null)
+
+    useBackHandler(() => {
+        if (canGoBack) {
+            webViewRef.current?.goBack()
+            return true
+        }
+        return false // default
+    })
 
     return (
         <SafeAreaView style={style.safearea}>
